@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="description" content="پنل نمایشی و آماده توسعه LEGENDS VPN؛ بدون اتصال واقعی به سرور یا بک‌اند"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1020">
+<meta charset="utf-8"><meta name="description" content="پنل نمایشی LEGENDS VPN با اسکلت امن اولیه برای اتصال آینده به API؛ بدون بک‌اند یا سرور واقعی"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1020">
 <title>LEGENDS VPN | Control Center</title>
 <style>
 :root{--bg:#090d18;--p:#11182a;--p2:#17233a;--line:#283550;--t:#eef3ff;--m:#9aa8c3;--c:#56e0d2;--b:#7896ff;--g:#51d69a;--y:#f5c66a;--r:#ff7185}
@@ -36,9 +36,43 @@
 <section class="page" id="servers"><div class="notice">وضعیت‌های زیر نمونه هستند. برای مانیتورینگ واقعی باید بک‌اند از داخل سرور وضعیت سرویس و مسیرها را گزارش کند.</div><div class="grid stats"><div class="card"><div class="stathead">سرورهای تعریف‌شده <span class="ico">⌘</span></div><div class="num">04</div><div class="sub">ساختار نمونه</div></div><div class="card"><div class="stathead">سالم در نمونه <span class="ico">✓</span></div><div class="num">03</div><div class="sub">اتصال واقعی تأیید نشده</div></div><div class="card"><div class="stathead">تأخیر نمونه <span class="ico">◷</span></div><div class="num">48 <small style="font-size:13px">ms</small></div><div class="sub">عدد نمایشی</div></div><div class="card"><div class="stathead">مسیر جایگزین <span class="ico">⇄</span></div><div class="num">01</div><div class="sub">نیازمند راه‌اندازی واقعی</div></div></div><div class="card"><div class="ctitle"><div><h2>فهرست سرورها</h2><p>نام‌ها و وضعیت‌ها نمونه‌اند؛ بررسی زنده انجام نشده.</p></div><button class="btn" id="check">اجرای بررسی نمایشی</button></div><div class="tablewrap"><table><thead><tr><th>نام</th><th>منطقه</th><th>نقش</th><th>تأخیر نمونه</th><th>وضعیت</th></tr></thead><tbody id="serverBody"></tbody></table></div></div></section>
 <section class="page" id="plans"><div class="notice">تعرفه‌ها و اعداد نمونه‌اند. پیش از عرضهٔ واقعی، هزینهٔ VPS، ترافیک، پشتیبانی، قوانین محل فعالیت و حریم خصوصی را بررسی کن.</div><div class="grid stats"><div class="card"><div class="stathead">Starter <span class="ico">◈</span></div><div class="num">50 <small style="font-size:13px">GB</small></div><div class="sub">طرح نمونه · ۳۰ روز</div><button class="btn" data-plan="Starter" style="margin-top:14px">ویرایش نمایشی</button></div><div class="card"><div class="stathead">Plus <span class="ico">◈</span></div><div class="num">150 <small style="font-size:13px">GB</small></div><div class="sub">طرح نمونه · ۳۰ روز</div><button class="btn" data-plan="Plus" style="margin-top:14px">ویرایش نمایشی</button></div><div class="card"><div class="stathead">Pro <span class="ico">◈</span></div><div class="num">300 <small style="font-size:13px">GB</small></div><div class="sub">طرح نمونه · ۳۰ روز</div><button class="btn" data-plan="Pro" style="margin-top:14px">ویرایش نمایشی</button></div><div class="card"><div class="stathead">ظرفیت تخصیص‌یافته <span class="ico">⇅</span></div><div class="num">72<small style="font-size:13px">٪</small></div><div class="sub">نمایش آزمایشی</div></div></div></section>
 <section class="page" id="activity"><div class="card"><div class="ctitle"><div><h2>گزارش رویدادها</h2><p>نمونهٔ گزارش قابل گسترش پس از اتصال بک‌اند</p></div><button class="btn" id="clear">پاک‌سازی نمایشی</button></div><div id="events"></div></div></section>
-<section class="page" id="settings"><div class="notice">کلیدهای API، رمزهای سرور و کانفیگ‌های حساس را داخل HTML عمومی یا مخزن GitHub قرار نده. اطلاعات محرمانه باید فقط در بک‌اند امن نگه‌داری شوند.</div><div class="card"><div class="ctitle"><div><h2>تنظیمات پروژه</h2><p>این فرم فقط اثر نمایشی دارد.</p></div><span class="tag">LOCAL DEMO</span></div><form id="settingsForm" class="formgrid"><div class="field"><label>نام سرویس</label><input value="LEGENDS VPN"></div><div class="field"><label>نشانی API بک‌اند</label><input placeholder="https://api.example.com"></div><div class="field"><label>سیاست ثبت گزارش</label><select><option>حداقل دادهٔ ضروری</option><option>گزارش عملیاتی محدود</option></select></div><div class="field"><label>فاصلهٔ بررسی سلامت</label><select><option>۶۰ ثانیه (پس از پیاده‌سازی)</option><option>۵ دقیقه (پس از پیاده‌سازی)</option></select></div><div class="field full"><button class="btn primary" type="submit">ذخیرهٔ نمایشی تنظیمات</button></div></form></div></section>
+<section class="page" id="settings"><div class="notice"><b>وضعیت API:</b> آدرس بک‌اند هنوز تنظیم نشده است. این فایل عمومی است؛ کلید محرمانه یا رمز را اینجا قرار نده. اتصال واقعی پس از استقرار بک‌اند HTTPS و پیاده‌سازی احراز هویت سمت سرور فعال می‌شود.</div><div class="notice">کلیدهای API، رمزهای سرور و کانفیگ‌های حساس را داخل HTML عمومی یا مخزن GitHub قرار نده. اطلاعات محرمانه باید فقط در بک‌اند امن نگه‌داری شوند.</div><div class="card"><div class="ctitle"><div><h2>تنظیمات پروژه</h2><p>این فرم فقط اثر نمایشی دارد.</p></div><span class="tag">LOCAL DEMO</span></div><form id="settingsForm" class="formgrid"><div class="field"><label>نام سرویس</label><input value="LEGENDS VPN"></div><div class="field"><label>نشانی API بک‌اند</label><input placeholder="https://api.example.com"></div><div class="field"><label>سیاست ثبت گزارش</label><select><option>حداقل دادهٔ ضروری</option><option>گزارش عملیاتی محدود</option></select></div><div class="field"><label>فاصلهٔ بررسی سلامت</label><select><option>۶۰ ثانیه (پس از پیاده‌سازی)</option><option>۵ دقیقه (پس از پیاده‌سازی)</option></select></div><div class="field full"><button class="btn primary" type="submit">ذخیرهٔ نمایشی تنظیمات</button></div></form></div></section>
 </main></div><div class="toast" id="toast"></div>
 <script>
+/* LEGENDS VPN API scaffold (frontend only)
+ * Set API_BASE_URL only to a real HTTPS backend you control.
+ * Never place passwords, private keys, admin tokens, or Xray credentials in this public file.
+ * The browser must never directly administer Xray; the backend must authenticate and authorize every request.
+ */
+const LEGENDS_API = Object.freeze({
+  baseUrl: "", // intentionally empty until a backend exists
+  timeoutMs: 10000,
+  get configured() { return /^https:\/\//i.test(this.baseUrl); }
+});
+async function legendsApi(path, options = {}) {
+  if (!LEGENDS_API.configured) {
+    throw new Error("API هنوز تنظیم نشده؛ این پنل در حالت نمایشی است.");
+  }
+  if (typeof path !== "string" || !path.startsWith("/") || path.startsWith("//")) {
+    throw new Error("مسیر API نامعتبر است.");
+  }
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), LEGENDS_API.timeoutMs);
+  try {
+    const response = await fetch(LEGENDS_API.baseUrl.replace(/\/$/, "") + path, {
+      ...options,
+      signal: controller.signal,
+      credentials: "omit",
+      headers: { "Accept": "application/json", ...(options.body ? {"Content-Type":"application/json"} : {}), ...(options.headers || {}) }
+    });
+    if (!response.ok) throw new Error("درخواست API ناموفق بود (" + response.status + ").");
+    const type = response.headers.get("content-type") || "";
+    if (!type.includes("application/json")) throw new Error("پاسخ API باید JSON باشد.");
+    return await response.json();
+  } finally {
+    clearTimeout(timeout);
+  }
+}
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 let users=[
 {name:"آرمان رضایی",email:"arman@example.test",plan:"Pro",used:184,total:300,expiry:"۱۴۰۵/۰۸/۱۵",status:"فعال"},
