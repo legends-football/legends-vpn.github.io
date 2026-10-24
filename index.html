@@ -275,7 +275,8 @@ $("#subscriptionForm").addEventListener("submit",async e=>{
     laStatus("ثبت اشتراک انجام نشد: "+(err?.message||"خطای نامشخص"));
   }finally{save.disabled=false;save.textContent="ثبت اشتراک";}
 });
-\n$("#check").onclick=()=>toast("بررسی زنده ممکن نیست؛ بک‌اند مانیتورینگ متصل نیست.");$$("[data-plan]").forEach(b=>b.onclick=()=>toast("ویرایش پلن "+b.dataset.plan+" فعلاً نمایشی است."));
+
+$("#check").onclick=()=>toast("بررسی زنده ممکن نیست؛ بک‌اند مانیتورینگ متصل نیست.");$$("[data-plan]").forEach(b=>b.onclick=()=>toast("ویرایش پلن "+b.dataset.plan+" فعلاً نمایشی است."));
 $("#clear").onclick=()=>{events=[];renderEvents();toast("رویدادهای نمایشی پاک شد.")};$("#settingsForm").onsubmit=e=>{e.preventDefault();toast("تنظیمات فقط نمایشی است؛ ذخیرهٔ دائمی انجام نشد.")};
 $("#exportBtn").onclick=()=>{let rows=[["name","email","plan","used_gb","total_gb","expiry","status"],...users.map(u=>[u.name,u.email,u.plan,u.used,u.total,u.expiry,u.status])];let csv="\uFEFF"+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="legends-vpn-users.csv";a.click();URL.revokeObjectURL(a.href);toast("فایل خروجی نمونه ساخته شد.")};
 document.addEventListener("click",e=>{let b=e.target.closest("[data-user]");if(b){let u=users.find(x=>x.email===b.dataset.user);if(u)toast(u.name+" · "+u.plan+" · "+u.status)}});
