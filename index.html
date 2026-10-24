@@ -215,8 +215,20 @@ async function loadRealUsers(){
     users = result.users.map(p => {
       const subs = Array.isArray(p.subscriptions) ? p.subscriptions : [];
       const sub = subs[0] || {};
-      const expiry = sub.expires_at ? new Date(sub.expires_at).toLocaleDateString("fa-IR") : "بدون اشتراک";
-      const status = sub.status === "active" ? "فعال" : sub.status ? String(sub.status) : "بدون اشتراک";
+      let expiry = "بدون اشتراک";
+      let status = sub.status ? String(sub.status) : "بدون اشتراک";
+      if (sub.expires_at) {
+        const expiryDate = new Date(sub.expires_at);
+        const daysLeft = Math.ceil((expiryDate.getTime() - Date.now()) / 86400000);
+        expiry = expiryDate.toLocaleDateString("fa-IR");
+        if (daysLeft <= 0) {
+          expiry += " · منقضی‌شده";
+          status = "منقضی";
+        } else {
+          expiry += ` · ${daysLeft} روز باقی‌مانده`;
+          status = sub.status === "active" ? (daysLeft <= 3 ? "رو به انقضا" : "فعال") : (sub.status ? String(sub.status) : "بدون اشتراک");
+        }
+      }
       return { id: p.id, name: p.display_name || "کاربر", email: p.email || p.id,
         plan: sub.plan_name || "بدون پلن", used: 0, total: 1, expiry, status };
     });
