@@ -22,7 +22,7 @@
 <p>این بخش ورود Supabase و آزمایش تابع legends-api را انجام می‌دهد. آمار داشبورد پایین هنوز نمونه‌ای است و با ورود خودکار به دادهٔ واقعی تبدیل نمی‌شود.</p>
 <div class="la-row"><input id="la-email" type="email" autocomplete="email" placeholder="ایمیل حساب" aria-label="ایمیل"><input id="la-password" type="password" autocomplete="current-password" placeholder="رمز عبور" aria-label="رمز عبور"></div>
 <div class="la-row"><button id="la-login" type="button">ورود</button><button id="la-signup" type="button" class="secondary">ساخت حساب</button><button id="la-test" type="button" class="secondary">آزمایش API</button><button id="la-logout" type="button" class="secondary">خروج</button></div>
-<div id="legends-auth-status" role="status">تنظیمات پروژه وارد شده‌اند؛ وضعیت ورود و اتصال را با دکمه‌ها بررسی کنید.</div>
+<div id="legends-auth-status" role="status">قبل از استفاده، آدرس پروژه و کلید عمومی Supabase را در کد تنظیم کنید.</div>
 </section>
 <div class="shell">
 <aside class="side" id="side"><div class="brand"><div class="logo">L</div><div><b>LEGENDS VPN</b><small>CONTROL CENTER / DEMO</small></div></div>
@@ -47,11 +47,11 @@
 <div class="grid lower">
 <div class="card"><div class="ctitle"><div><h2>رویدادهای اخیر</h2><p>نمونهٔ گزارش</p></div><button class="link" data-goto="activity">مشاهده همه</button></div><div class="event"><div class="eventicon">✓</div><div><b>رابط مدیریتی بارگذاری شد</b><p>نسخهٔ نمایشی آمادهٔ اتصال به بک‌اند است.</p><time>همین حالا · محلی</time></div></div><div class="event"><div class="eventicon">⚑</div><div><b>زیرساخت ناقص است</b><p>قبل از استفادهٔ واقعی، تست سرور و احراز هویت لازم است.</p><time>یادآوری سامانه</time></div></div></div>
 <div class="card"><div class="ctitle"><div><h2>میان‌برها</h2><p>عملیات آزمایشی</p></div></div><div class="quickgrid"><button class="quick" data-goto="users"><span>＋</span><b>افزودن کاربر نمونه</b><small>ثبت در جدول موقت</small></button><button class="quick" data-goto="servers"><span>⌘</span><b>بررسی سرورها</b><small>مشاهده وضعیت</small></button><button class="quick" data-goto="plans"><span>◈</span><b>مدیریت پلن‌ها</b><small>ساختار اشتراک</small></button><button class="quick" data-goto="settings"><span>⚙</span><b>تنظیمات</b><small>مشخصات پروژه</small></button></div></div></div></section>
-<section class="page" id="users"><div class="card"><div class="ctitle"><div><h2>کاربران و اشتراک‌ها</h2><p>اطلاعات نمونه؛ چیزی به سرور ارسال نمی‌شود.</p></div><div class="tools"><input class="search" id="search" placeholder="جست‌وجوی نام یا ایمیل…"><button class="btn primary" id="add">＋ کاربر نمونه</button></div></div><div class="tablewrap"><table><thead><tr><th>کاربر</th><th>پلن</th><th>مصرف</th><th>انقضا</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="usersBody"></tbody></table></div></div></section>
+<section class="page" id="users"><div class="card"><div class="ctitle"><div><h2>اشتراک‌های حساب فعلی</h2><p id="usersDataLabel">برای دریافت دادهٔ واقعی، وارد حساب شو و «آزمایش API» را بزن. فهرست فقط اشتراک‌های همین حساب را نشان می‌دهد.</p></div><div class="tools"><input class="search" id="search" placeholder="جست‌وجوی نام یا ایمیل…"><button class="btn primary" id="add">＋ کاربر نمونه</button></div></div><div class="tablewrap"><table><thead><tr><th>کاربر</th><th>پلن</th><th>مصرف</th><th>انقضا</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="usersBody"></tbody></table></div></div></section>
 <section class="page" id="servers"><div class="notice">وضعیت‌های زیر نمونه هستند. برای مانیتورینگ واقعی باید بک‌اند از داخل سرور وضعیت سرویس و مسیرها را گزارش کند.</div><div class="grid stats"><div class="card"><div class="stathead">سرورهای تعریف‌شده <span class="ico">⌘</span></div><div class="num">04</div><div class="sub">ساختار نمونه</div></div><div class="card"><div class="stathead">سالم در نمونه <span class="ico">✓</span></div><div class="num">03</div><div class="sub">اتصال واقعی تأیید نشده</div></div><div class="card"><div class="stathead">تأخیر نمونه <span class="ico">◷</span></div><div class="num">48 <small style="font-size:13px">ms</small></div><div class="sub">عدد نمایشی</div></div><div class="card"><div class="stathead">مسیر جایگزین <span class="ico">⇄</span></div><div class="num">01</div><div class="sub">نیازمند راه‌اندازی واقعی</div></div></div><div class="card"><div class="ctitle"><div><h2>فهرست سرورها</h2><p>نام‌ها و وضعیت‌ها نمونه‌اند؛ بررسی زنده انجام نشده.</p></div><button class="btn" id="check">اجرای بررسی نمایشی</button></div><div class="tablewrap"><table><thead><tr><th>نام</th><th>منطقه</th><th>نقش</th><th>تأخیر نمونه</th><th>وضعیت</th></tr></thead><tbody id="serverBody"></tbody></table></div></div></section>
 <section class="page" id="plans"><div class="notice">تعرفه‌ها و اعداد نمونه‌اند. پیش از عرضهٔ واقعی، هزینهٔ VPS، ترافیک، پشتیبانی، قوانین محل فعالیت و حریم خصوصی را بررسی کن.</div><div class="grid stats"><div class="card"><div class="stathead">Starter <span class="ico">◈</span></div><div class="num">50 <small style="font-size:13px">GB</small></div><div class="sub">طرح نمونه · ۳۰ روز</div><button class="btn" data-plan="Starter" style="margin-top:14px">ویرایش نمایشی</button></div><div class="card"><div class="stathead">Plus <span class="ico">◈</span></div><div class="num">150 <small style="font-size:13px">GB</small></div><div class="sub">طرح نمونه · ۳۰ روز</div><button class="btn" data-plan="Plus" style="margin-top:14px">ویرایش نمایشی</button></div><div class="card"><div class="stathead">Pro <span class="ico">◈</span></div><div class="num">300 <small style="font-size:13px">GB</small></div><div class="sub">طرح نمونه · ۳۰ روز</div><button class="btn" data-plan="Pro" style="margin-top:14px">ویرایش نمایشی</button></div><div class="card"><div class="stathead">ظرفیت تخصیص‌یافته <span class="ico">⇅</span></div><div class="num">72<small style="font-size:13px">٪</small></div><div class="sub">نمایش آزمایشی</div></div></div></section>
 <section class="page" id="activity"><div class="card"><div class="ctitle"><div><h2>گزارش رویدادها</h2><p>نمونهٔ گزارش قابل گسترش پس از اتصال بک‌اند</p></div><button class="btn" id="clear">پاک‌سازی نمایشی</button></div><div id="events"></div></div></section>
-<section class="page" id="settings"><div class="notice"><b>وضعیت API:</b> تابع Supabase با نام legends-api برای تست تنظیم شده است؛ اتصال واقعی باید در مرورگر آزمایش شود. این فایل عمومی است؛ کلید محرمانه یا رمز را اینجا قرار نده. اتصال واقعی پس از استقرار بک‌اند HTTPS و پیاده‌سازی احراز هویت سمت سرور فعال می‌شود.</div><div class="notice">کلیدهای API، رمزهای سرور و کانفیگ‌های حساس را داخل HTML عمومی یا مخزن GitHub قرار نده. اطلاعات محرمانه باید فقط در بک‌اند امن نگه‌داری شوند.</div><div class="card"><div class="ctitle"><div><h2>تنظیمات پروژه</h2><p>این فرم فقط اثر نمایشی دارد.</p></div><span class="tag">LOCAL DEMO</span></div><form id="settingsForm" class="formgrid"><div class="field"><label>نام سرویس</label><input value="LEGENDS VPN"></div><div class="field"><label>نشانی API بک‌اند</label><input placeholder="https://api.example.com"></div><div class="field"><label>سیاست ثبت گزارش</label><select><option>حداقل دادهٔ ضروری</option><option>گزارش عملیاتی محدود</option></select></div><div class="field"><label>فاصلهٔ بررسی سلامت</label><select><option>۶۰ ثانیه (پس از پیاده‌سازی)</option><option>۵ دقیقه (پس از پیاده‌سازی)</option></select></div><div class="field full"><button class="btn primary" type="submit">ذخیرهٔ نمایشی تنظیمات</button></div></form></div></section>
+<section class="page" id="settings"><div class="notice"><b>وضعیت API:</b> آدرس بک‌اند هنوز تنظیم نشده است. این فایل عمومی است؛ کلید محرمانه یا رمز را اینجا قرار نده. اتصال واقعی پس از استقرار بک‌اند HTTPS و پیاده‌سازی احراز هویت سمت سرور فعال می‌شود.</div><div class="notice">کلیدهای API، رمزهای سرور و کانفیگ‌های حساس را داخل HTML عمومی یا مخزن GitHub قرار نده. اطلاعات محرمانه باید فقط در بک‌اند امن نگه‌داری شوند.</div><div class="card"><div class="ctitle"><div><h2>تنظیمات پروژه</h2><p>این فرم فقط اثر نمایشی دارد.</p></div><span class="tag">LOCAL DEMO</span></div><form id="settingsForm" class="formgrid"><div class="field"><label>نام سرویس</label><input value="LEGENDS VPN"></div><div class="field"><label>نشانی API بک‌اند</label><input placeholder="https://api.example.com"></div><div class="field"><label>سیاست ثبت گزارش</label><select><option>حداقل دادهٔ ضروری</option><option>گزارش عملیاتی محدود</option></select></div><div class="field"><label>فاصلهٔ بررسی سلامت</label><select><option>۶۰ ثانیه (پس از پیاده‌سازی)</option><option>۵ دقیقه (پس از پیاده‌سازی)</option></select></div><div class="field full"><button class="btn primary" type="submit">ذخیرهٔ نمایشی تنظیمات</button></div></form></div></section>
 </main></div><div class="toast" id="toast"></div>
 
 <script>
@@ -74,12 +74,7 @@ document.getElementById("la-login").addEventListener("click",async()=>{
  if(!legendsSupabase)return laStatus("ابتدا تنظیمات Supabase را در کد وارد کنید.");
  const {email,password}=laCredentials(); if(!email||!password)return laStatus("ایمیل و رمز عبور را وارد کنید.");
  laStatus("در حال ورود..."); const {data,error}=await legendsSupabase.auth.signInWithPassword({email,password});
- if(error){
-   const msg=String(error.message||"");
-   if(/invalid login credentials/i.test(msg)) return laStatus("ورود انجام نشد: Supabase این ایمیل/رمز را تأیید نکرد. این خطا معمولاً از اشتباه بودن رمز، حساب ثبت‌نام‌نشده یا پروژهٔ متفاوت است؛ به‌تنهایی نشانهٔ اشتباه بودن کلید عمومی نیست. از «ساخت حساب» استفاده کن یا رمز را از مسیر رسمی بازیابی کن.");
-   if(/email not confirmed/i.test(msg)) return laStatus("ورود انجام نشد: ایمیل هنوز تأیید نشده است. صندوق ورودی و پوشهٔ هرزنامه را بررسی کن.");
-   return laStatus("ورود ناموفق ("+(error.status||"بدون کد")+"): "+msg);
- }
+ if(error)return laStatus("ورود ناموفق: "+error.message);
  laStatus("ورود موفق بود. شناسه حساب: "+data.user.id+"\\nحالا آزمایش API را بزنید.");
 });
 document.getElementById("la-signup").addEventListener("click",async()=>{
@@ -88,7 +83,7 @@ document.getElementById("la-signup").addEventListener("click",async()=>{
  if(password.length<8)return laStatus("رمز عبور باید حداقل ۸ نویسه داشته باشد.");
  laStatus("در حال ساخت حساب..."); const {data,error}=await legendsSupabase.auth.signUp({email,password});
  if(error)return laStatus("ساخت حساب ناموفق: "+error.message);
- laStatus(data.session?"حساب ساخته شد و وارد شدید؛ اکنون «آزمایش API» را بزنید.":"درخواست ثبت‌نام ارسال شد. اگر ایمیل تأیید لازم است، لینک ایمیل را باز کنید. اگر پیام کاربر موجود است، با حساب فعلی وارد شوید یا رمز را بازیابی کنید.");
+ laStatus(data.session?"حساب ساخته شد و وارد شدید؛ آزمایش API را بزنید.":"درخواست ساخت حساب ارسال شد؛ اگر تأیید ایمیل فعال است صندوق ایمیل را بررسی کنید.");
 });
 document.getElementById("la-test").addEventListener("click",async()=>{
  if(!legendsSupabase)return laStatus("ابتدا تنظیمات Supabase را در کد وارد کنید.");
@@ -100,26 +95,13 @@ document.getElementById("la-test").addEventListener("click",async()=>{
   const raw=await r.text(); let body; try{body=JSON.parse(raw)}catch(_){body=raw}
   if(!r.ok)return laStatus("API پاسخ "+r.status+" داد:\\n"+(typeof body==="string"?body:JSON.stringify(body,null,2)));
   laStatus("اتصال API موفق بود:\\n"+JSON.stringify(body,null,2));
+  window.dispatchEvent(new CustomEvent("legends:api-data", {detail: body}));
  }catch(err){laStatus("خطای اتصال: "+err.message)}
 });
 document.getElementById("la-logout").addEventListener("click",async()=>{
  if(!legendsSupabase)return laStatus("تنظیمات Supabase وارد نشده‌اند.");
- const {error}=await legendsSupabase.auth.signOut();
- laStatus(error?"خروج ناموفق: "+error.message:"از حساب خارج شدید.");
+ const {error}=await legendsSupabase.auth.signOut(); laStatus(error?"خروج ناموفق: "+error.message:"از حساب خارج شدید.");
 });
-if (legendsSupabase) {
- legendsSupabase.auth.onAuthStateChange((event, session) => {
-   if (event === "SIGNED_OUT") laStatus("از حساب خارج شدید.");
-   else if (event === "SIGNED_IN" && session?.user) {
-     laStatus("نشست کاربر فعال است. برای بررسی دسترسی تابع، «آزمایش API» را بزنید.");
-   }
- });
- legendsSupabase.auth.getSession().then(({data, error}) => {
-   if (error) laStatus("خواندن نشست ناموفق بود: " + error.message);
-   else if (data.session) laStatus("نشست قبلی بازیابی شد. برای بررسی دسترسی تابع، «آزمایش API» را بزنید.");
-   else laStatus("Supabase تنظیم شده است؛ برای ادامه وارد حساب شوید یا حساب بسازید.");
- });
-}
 </script>
 
 <script>
@@ -158,24 +140,36 @@ async function legendsApi(path, options = {}) {
   }
 }
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
-let users=[
-{name:"آرمان رضایی",email:"arman@example.test",plan:"Pro",used:184,total:300,expiry:"۱۴۰۵/۰۸/۱۵",status:"فعال"},
-{name:"سارا محمدی",email:"sara@example.test",plan:"Plus",used:91,total:150,expiry:"۱۴۰۵/۰۸/۰۹",status:"فعال"},
-{name:"علی کریمی",email:"ali@example.test",plan:"Starter",used:48,total:50,expiry:"۱۴۰۵/۰۷/۲۸",status:"رو به انقضا"},
-{name:"نگار احمدی",email:"negar@example.test",plan:"Pro",used:300,total:300,expiry:"۱۴۰۵/۰۷/۱۰",status:"منقضی"},
-{name:"پارسا حسینی",email:"parsa@example.test",plan:"Plus",used:23,total:150,expiry:"۱۴۰۵/۰۸/۲۰",status:"فعال"}];
+let users=[];
+let usersAreLive=false;
 const servers=[["EU-West-01","اروپای غربی","اصلی","42 ms","نمونه: سالم"],["EU-Central-02","اروپای مرکزی","جایگزین","48 ms","نمونه: سالم"],["EU-North-03","اروپای شمالی","ظرفیت اضافی","71 ms","نمونه: سالم"],["Fallback-04","تعریف‌نشده","بازیابی","—","پیکربندی نشده"]];
 let events=[["✓","رابط مدیریتی بارگذاری شد","داشبورد در مرورگر باز شد؛ بک‌اند متصل نیست.","همین حالا"],["⚑","نیاز به پیکربندی سرور","آدرس و وضعیت واقعی سرور هنوز تعریف نشده است.","یادآوری سامانه"],["◇","سیاست حریم خصوصی","فقط داده‌های ضروری را نگه‌داری کن.","چک‌لیست امنیت"]];
 function toast(s){let t=$("#toast");t.textContent=s;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800)}
-function renderUsers(){let q=($("#search")?.value||"").toLowerCase();$("#usersBody").innerHTML=users.filter(u=>(u.name+u.email+u.plan).toLowerCase().includes(q)).map(u=>`<tr><td><div class="usercell"><div class="avatar">${u.name[0]}</div><div>${u.name}<small>${u.email}</small></div></div></td><td>${u.plan}</td><td><div style="display:flex;align-items:center;gap:7px"><div class="progress"><span style="width:${Math.min(100,u.used/u.total*100)}%"></span></div><small>${u.used}/${u.total} GB</small></div></td><td>${u.expiry}</td><td><span class="pill ${u.status==="منقضی"?"expired":u.status==="رو به انقضا"||u.status==="آزمایشی"?"trial":""}">${u.status}</span></td><td><button class="link" data-user="${u.email}">جزئیات</button></td></tr>`).join("")||'<tr><td colspan="6">موردی پیدا نشد</td></tr>'}
+window.addEventListener("legends:api-data", ev => {
+ const data=ev.detail||{};
+ if(!data.ok || !data.profile || !Array.isArray(data.subscriptions)) return;
+ usersAreLive=true;
+ const email=(data.user&&data.user.email)||"حساب فعلی";
+ users=data.subscriptions.map(sub=>({
+   name:data.profile.display_name||"حساب فعلی", email,
+   plan:sub.plan_name||"بدون پلن", used:0, total:0,
+   expiry:sub.expires_at?new Date(sub.expires_at).toLocaleDateString("fa-IR"):"تعیین نشده",
+   status:sub.status==="active"?"فعال":(sub.status||"نامشخص")
+ }));
+ const label=$("#usersDataLabel");
+ if(label) label.textContent="دادهٔ واقعی از legends-api؛ فقط اشتراک‌های حساب واردشده نمایش داده می‌شوند. مقدار مصرف تا زمان اتصال سامانهٔ اندازه‌گیری در دسترس نیست.";
+ const add=$("#add"); if(add){add.disabled=true;add.title="افزودن کاربر واقعی از این نسخهٔ فرانت‌اند پشتیبانی نمی‌شود.";add.textContent="افزودن کاربر (غیرفعال)";}
+ renderUsers();
+});
+function renderUsers(){let q=($("#search")?.value||"").toLowerCase();$("#usersBody").innerHTML=users.filter(u=>(u.name+u.email+u.plan).toLowerCase().includes(q)).map(u=>`<tr><td><div class="usercell"><div class="avatar">${u.name[0]}</div><div>${u.name}<small>${u.email}</small></div></div></td><td>${u.plan}</td><td><div style="display:flex;align-items:center;gap:7px"><div class="progress"><span style="width:${(u.total>0?Math.min(100,u.used/u.total*100):0)}%"></span></div><small>${u.used}/${u.total} GB</small></div></td><td>${u.expiry}</td><td><span class="pill ${u.status==="منقضی"?"expired":u.status==="رو به انقضا"||u.status==="آزمایشی"?"trial":""}">${u.status}</span></td><td><button class="link" data-user="${u.email}">جزئیات</button></td></tr>`).join("")||'<tr><td colspan="6">موردی پیدا نشد</td></tr>'}
 function renderServers(){$("#serverBody").innerHTML=servers.map(s=>`<tr><td dir="ltr"><b>${s[0]}</b></td><td>${s[1]}</td><td>${s[2]}</td><td dir="ltr">${s[3]}</td><td><span class="pill ${s[4].includes("پیکربندی")?"trial":""}">${s[4]}</span></td></tr>`).join("")}
 function renderEvents(){$("#events").innerHTML=events.map(e=>`<div class="event"><div class="eventicon">${e[0]}</div><div><b>${e[1]}</b><p>${e[2]}</p><time>${e[3]}</time></div></div>`).join("")||'<div style="padding:24px;color:var(--m)">رویدادی نیست.</div>'}
 function goto(id){$$(".page").forEach(p=>p.classList.toggle("active",p.id===id));$$("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===id));$("#pageTitle").textContent=({overview:"مرکز کنترل سرویس",users:"کاربران و اشتراک‌ها",servers:"سرورها و سلامت",plans:"پلن‌ها و ظرفیت",activity:"گزارش رویدادها",settings:"تنظیمات سامانه"})[id];$("#side").classList.remove("open");scrollTo({top:0,behavior:"smooth"})}
 $$("[data-page]").forEach(b=>b.onclick=()=>goto(b.dataset.page));$$("[data-goto]").forEach(b=>b.onclick=()=>goto(b.dataset.goto));$("#menuBtn").onclick=()=>$("#side").classList.toggle("open");
-$("#search").oninput=renderUsers;$("#add").onclick=()=>{let n=users.length+1;users.unshift({name:"کاربر آزمایشی "+n,email:"demo"+n+"@example.test",plan:"Starter",used:0,total:50,expiry:"تعیین نشده",status:"آزمایشی"});renderUsers();toast("کاربر نمونه اضافه شد؛ اطلاعات ارسال نشد.")};
+$("#search").oninput=renderUsers;$("#add").onclick=()=>{if(usersAreLive)return toast("ایجاد حساب یا اشتراک واقعی باید از مسیر امن بک‌اند انجام شود.");let n=users.length+1;users.unshift({name:"کاربر آزمایشی "+n,email:"demo"+n+"@example.test",plan:"Starter",used:0,total:50,expiry:"تعیین نشده",status:"آزمایشی"});renderUsers();toast("کاربر نمونه اضافه شد؛ اطلاعات ارسال نشد.")};
 $("#check").onclick=()=>toast("بررسی زنده ممکن نیست؛ بک‌اند مانیتورینگ متصل نیست.");$$("[data-plan]").forEach(b=>b.onclick=()=>toast("ویرایش پلن "+b.dataset.plan+" فعلاً نمایشی است."));
 $("#clear").onclick=()=>{events=[];renderEvents();toast("رویدادهای نمایشی پاک شد.")};$("#settingsForm").onsubmit=e=>{e.preventDefault();toast("تنظیمات فقط نمایشی است؛ ذخیرهٔ دائمی انجام نشد.")};
-$("#exportBtn").onclick=()=>{let rows=[["name","email","plan","used_gb","total_gb","expiry","status"],...users.map(u=>[u.name,u.email,u.plan,u.used,u.total,u.expiry,u.status])];let csv="\uFEFF"+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="legends-vpn-demo-users.csv";a.click();URL.revokeObjectURL(a.href);toast("فایل خروجی نمونه ساخته شد.")};
+$("#exportBtn").onclick=()=>{let rows=[["name","email","plan","used_gb","total_gb","expiry","status"],...users.map(u=>[u.name,u.email,u.plan,u.used,u.total,u.expiry,u.status])];let csv="\uFEFF"+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download=usersAreLive?"legends-vpn-account-subscriptions.csv":"legends-vpn-demo-users.csv";a.click();URL.revokeObjectURL(a.href);toast("فایل خروجی نمونه ساخته شد.")};
 document.addEventListener("click",e=>{let b=e.target.closest("[data-user]");if(b){let u=users.find(x=>x.email===b.dataset.user);if(u)toast(u.name+" · "+u.plan+" · "+u.status+" — اطلاعات نمونه")}});
 $("#chart").innerHTML=[42,66,51,83,60,91,72].map(v=>`<div class="barwrap"><div class="bar alt" style="height:${v-17}%"></div><div class="bar" style="height:${v}%"></div></div>`).join("");renderUsers();renderServers();renderEvents();
 </script></body></html>
