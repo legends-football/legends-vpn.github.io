@@ -74,7 +74,7 @@ document.getElementById("la-login").addEventListener("click",async()=>{
  if(!legendsSupabase)return laStatus("ابتدا تنظیمات Supabase را در کد وارد کنید.");
  const {email,password}=laCredentials(); if(!email||!password)return laStatus("ایمیل و رمز عبور را وارد کنید.");
  laStatus("در حال ورود..."); const {data,error}=await legendsSupabase.auth.signInWithPassword({email,password});
- if(error)return {
+ if(error){
    const msg=String(error.message||"");
    if(/invalid login credentials/i.test(msg)) return laStatus("ورود انجام نشد: Supabase این ایمیل/رمز را تأیید نکرد. این خطا معمولاً از اشتباه بودن رمز، حساب ثبت‌نام‌نشده یا پروژهٔ متفاوت است؛ به‌تنهایی نشانهٔ اشتباه بودن کلید عمومی نیست. از «ساخت حساب» استفاده کن یا رمز را از مسیر رسمی بازیابی کن.");
    if(/email not confirmed/i.test(msg)) return laStatus("ورود انجام نشد: ایمیل هنوز تأیید نشده است. صندوق ورودی و پوشهٔ هرزنامه را بررسی کن.");
