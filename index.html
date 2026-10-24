@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="description" content="پنل نمایشی LEGENDS VPN با اسکلت امن اولیه برای اتصال آینده به API؛ بدون بک‌اند یا سرور واقعی"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1020">
+<meta charset="utf-8"><meta name="description" content="پنل LEGENDS VPN با ورود رمز مشترک از طریق تابع امن legends-gate"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1020">
 <title>LEGENDS VPN | Control Center</title>
 <style>
 :root{--bg:#090d18;--p:#11182a;--p2:#17233a;--line:#283550;--t:#eef3ff;--m:#9aa8c3;--c:#56e0d2;--b:#7896ff;--g:#51d69a;--y:#f5c66a;--r:#ff7185}
@@ -11,18 +11,19 @@
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 #legends-auth{margin:18px auto;max-width:1100px;padding:18px;border:1px solid #30435d;border-radius:16px;background:#0d1727;color:#e8eef8}
+body:not(.gate-authenticated) .shell{display:none} body.gate-authenticated #legends-auth{max-width:1100px} body:not(.gate-authenticated) #deployment-note{display:none}
 #legends-auth h2{margin:0 0 8px;font-size:18px}#legends-auth p{line-height:1.8;color:#aebdd2;font-size:13px}
 #legends-auth .la-row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
 #legends-auth input{flex:1;min-width:190px;padding:11px;border:1px solid #33445d;border-radius:9px;background:#08111f;color:#fff}
 #legends-auth button{padding:10px 15px;border:0;border-radius:9px;background:#3b82f6;color:#fff;font-weight:700;cursor:pointer}
 #legends-auth button.secondary{background:#27364b}#legends-auth-status{white-space:pre-wrap;overflow-wrap:anywhere;background:#08111f;padding:12px;border-radius:9px;color:#c5d5eb;font-size:12px}
 </style></head>
-<body><div id="deployment-note" role="status" style="position:relative;z-index:20;padding:10px 16px;background:#30250f;border-bottom:1px solid #80652a;color:#ffe6a3;font-size:12px;line-height:1.9;text-align:center">نسخهٔ اتصال آزمایشی · ورود Supabase و بررسی API در بخش بالا قابل تنظیم است؛ داشبورد پایین هنوز نمونه‌ای است و اتصال Xray/VLESS به VPS و بک‌اند امن نیاز دارد.</div><section id="legends-auth" dir="rtl" aria-label="اتصال Supabase">
-<h2>ورود و بررسی اتصال API</h2>
-<p>این بخش ورود Supabase و آزمایش تابع legends-api را انجام می‌دهد. آمار داشبورد پایین هنوز نمونه‌ای است و با ورود خودکار به دادهٔ واقعی تبدیل نمی‌شود.</p>
-<div class="la-row"><input id="la-email" type="email" autocomplete="email" placeholder="ایمیل حساب" aria-label="ایمیل"><input id="la-password" type="password" autocomplete="current-password" placeholder="رمز عبور" aria-label="رمز عبور"></div>
-<div class="la-row"><button id="la-login" type="button">ورود</button><button id="la-signup" type="button" class="secondary">ساخت حساب</button><button id="la-test" type="button" class="secondary">آزمایش API</button><button id="la-logout" type="button" class="secondary">خروج</button></div>
-<div id="legends-auth-status" role="status">تنظیمات پروژه وارد شده‌اند؛ وضعیت ورود و اتصال را با دکمه‌ها بررسی کنید.</div>
+<body><div id="deployment-note" role="status" style="position:relative;z-index:20;padding:10px 16px;background:#30250f;border-bottom:1px solid #80652a;color:#ffe6a3;font-size:12px;line-height:1.9;text-align:center">ورود با رمز مشترک پنل از طریق legends-gate فعال است. اطلاعات واقعی دیتابیس فقط پس از هماهنگ‌سازی احراز هویت legends-api نمایش داده می‌شود.</div><section id="legends-auth" dir="rtl" aria-label="ورود به پنل">
+<h2>ورود به LEGENDS VPN</h2>
+<p>رمز مشترک پنل را وارد کنید. برای ورود به پنل نیازی به جیمیل نیست.</p>
+<div class="la-row"><input id="la-password" type="password" autocomplete="current-password" placeholder="رمز عبور پنل" aria-label="رمز عبور پنل"></div>
+<div class="la-row"><button id="la-login" type="button">ورود</button><button id="la-test" type="button" class="secondary">بررسی نشست</button><button id="la-logout" type="button" class="secondary">خروج</button></div>
+<div id="legends-auth-status" role="status">برای ورود، رمز پنل را وارد کنید.</div>
 </section>
 <div class="shell">
 <aside class="side" id="side"><div class="brand"><div class="logo">L</div><div><b>LEGENDS VPN</b><small>CONTROL CENTER / DEMO</small></div></div>
@@ -55,66 +56,52 @@
 </main></div><div class="toast" id="toast"></div>
 
 <script>
-/* Public static file: use only the public anon/publishable key.
-   NEVER put service_role keys or VPN/server secrets in GitHub Pages. */
+/* Public frontend: password verification and short-lived signed token are handled by legends-gate. */
+const LEGENDS_GATE_URL = "https://ulrhxistaqlxassgpvao.supabase.co/functions/v1/legends-gate";
 const LEGENDS_SUPABASE_URL = "https://ulrhxistaqlxassgpvao.supabase.co";
 const LEGENDS_SUPABASE_PUBLIC_KEY = "sb_publishable_IRUJWLYvXht8F2vdo7hNRw_dXrgDw8n";
 const LEGENDS_FUNCTION_NAME = "legends-api";
 const laStatus = m => { const e=document.getElementById("legends-auth-status"); if(e)e.textContent=m; };
-const laConfigured = () => /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(LEGENDS_SUPABASE_URL) &&
- !LEGENDS_SUPABASE_URL.includes("YOUR_PROJECT_REF") && LEGENDS_SUPABASE_PUBLIC_KEY.length>20 &&
- !LEGENDS_SUPABASE_PUBLIC_KEY.includes("YOUR_SUPABASE");
-let legendsSupabase = null;
-if(window.supabase && laConfigured()) legendsSupabase=window.supabase.createClient(
- LEGENDS_SUPABASE_URL,LEGENDS_SUPABASE_PUBLIC_KEY,
- {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-else laStatus("تنظیمات Supabase هنوز وارد نشده‌اند. دو مقدار LEGENDS_SUPABASE_URL و LEGENDS_SUPABASE_PUBLIC_KEY را در کد با آدرس پروژه و کلید عمومی جایگزین کنید.");
-const laCredentials=()=>({email:document.getElementById("la-email").value.trim(),password:document.getElementById("la-password").value});
-document.getElementById("la-login").addEventListener("click",async()=>{
- if(!legendsSupabase)return laStatus("ابتدا تنظیمات Supabase را در کد وارد کنید.");
- const {email,password}=laCredentials(); if(!email||!password)return laStatus("ایمیل و رمز عبور را وارد کنید.");
- laStatus("در حال ورود..."); const {data,error}=await legendsSupabase.auth.signInWithPassword({email,password});
- if(error)return laStatus("ورود ناموفق: "+error.message);
- laStatus("ورود موفق بود. شناسه حساب: "+data.user.id+"\\nحالا آزمایش API را بزنید.");
-});
-document.getElementById("la-signup").addEventListener("click",async()=>{
- if(!legendsSupabase)return laStatus("ابتدا تنظیمات Supabase را در کد وارد کنید.");
- const {email,password}=laCredentials(); if(!email||!password)return laStatus("ایمیل و رمز عبور را وارد کنید.");
- if(password.length<8)return laStatus("رمز عبور باید حداقل ۸ نویسه داشته باشد.");
- laStatus("در حال ساخت حساب..."); const {data,error}=await legendsSupabase.auth.signUp({email,password});
- if(error)return laStatus("ساخت حساب ناموفق: "+error.message);
- laStatus(data.session?"حساب ساخته شد و وارد شدید؛ آزمایش API را بزنید.":"درخواست ساخت حساب ارسال شد؛ اگر تأیید ایمیل فعال است صندوق ایمیل را بررسی کنید.");
+const gateTokenKey = "legends_gate_token";
+const getGateToken = () => { try { return sessionStorage.getItem(gateTokenKey) || ""; } catch { return ""; } };
+const setGateToken = token => { try { sessionStorage.setItem(gateTokenKey, token); } catch {} };
+const clearGateToken = () => { try { sessionStorage.removeItem(gateTokenKey); } catch {} };
+async function checkGateSession(token=getGateToken()) {
+ if(!token) return false;
+ try {
+  const r=await fetch(LEGENDS_GATE_URL+"/session", {method:"GET", credentials:"omit", headers:{"Authorization":"Bearer "+token,"Accept":"application/json"}});
+  return r.ok;
+ } catch { return false; }
+}
+function showAuthenticated(show) {
+ document.body.classList.toggle("gate-authenticated", !!show);
+ document.getElementById("la-password").value="";
+}
+document.getElementById("la-login").addEventListener("click", async()=>{
+ const password=document.getElementById("la-password").value;
+ if(!password) return laStatus("رمز پنل را وارد کنید.");
+ laStatus("در حال بررسی رمز پنل...");
+ try {
+  const r=await fetch(LEGENDS_GATE_URL+"/login", {method:"POST", credentials:"omit", headers:{"Content-Type":"application/json","Accept":"application/json"}, body:JSON.stringify({password})});
+  let body={}; try { body=await r.json(); } catch {}
+  if(!r.ok || !body.token) return laStatus(body.message || "ورود ناموفق بود. رمز را بررسی کنید.");
+  setGateToken(body.token); showAuthenticated(true); laStatus("ورود موفق بود. نشست پنل تا ۴ ساعت اعتبار دارد.");
+ } catch(err) { laStatus("ارتباط با درگاه ورود برقرار نشد: "+err.message); }
 });
 document.getElementById("la-test").addEventListener("click",async()=>{
- if(!legendsSupabase)return laStatus("ابتدا تنظیمات Supabase را در کد وارد کنید.");
- laStatus("در حال بررسی نشست و API..."); const {data:s,error:e}=await legendsSupabase.auth.getSession();
- if(e||!s.session)return laStatus("ابتدا وارد حساب شوید.");
- try{
-  const r=await fetch(LEGENDS_SUPABASE_URL+"/functions/v1/"+LEGENDS_FUNCTION_NAME,{method:"GET",credentials:"omit",
-   headers:{"apikey":LEGENDS_SUPABASE_PUBLIC_KEY,"Authorization":"Bearer "+s.session.access_token,"Accept":"application/json"}});
-  const raw=await r.text(); let body; try{body=JSON.parse(raw)}catch(_){body=raw}
-  if(!r.ok)return laStatus("API پاسخ "+r.status+" داد:\\n"+(typeof body==="string"?body:JSON.stringify(body,null,2)));
-  laStatus("اتصال API موفق بود:\\n"+JSON.stringify(body,null,2));
- }catch(err){laStatus("خطای اتصال: "+err.message)}
+ laStatus("در حال بررسی نشست...");
+ const ok=await checkGateSession();
+ if(ok) { showAuthenticated(true); laStatus("نشست معتبر است."); }
+ else { clearGateToken(); showAuthenticated(false); laStatus("نشست معتبر نیست یا منقضی شده؛ دوباره رمز پنل را وارد کنید."); }
 });
-document.getElementById("la-logout").addEventListener("click",async()=>{
- if(!legendsSupabase)return laStatus("تنظیمات Supabase وارد نشده‌اند.");
- const {error}=await legendsSupabase.auth.signOut();
- laStatus(error?"خروج ناموفق: "+error.message:"از حساب خارج شدید.");
+document.getElementById("la-logout").addEventListener("click",()=>{
+ clearGateToken(); showAuthenticated(false); laStatus("از پنل خارج شدید.");
 });
-if (legendsSupabase) {
- legendsSupabase.auth.onAuthStateChange((event, session) => {
-   if (event === "SIGNED_OUT") laStatus("از حساب خارج شدید.");
-   else if (event === "SIGNED_IN" && session?.user) {
-     laStatus("نشست کاربر فعال است. برای بررسی دسترسی تابع، «آزمایش API» را بزنید.");
-   }
- });
- legendsSupabase.auth.getSession().then(({data, error}) => {
-   if (error) laStatus("خواندن نشست ناموفق بود: " + error.message);
-   else if (data.session) laStatus("نشست قبلی بازیابی شد. برای بررسی دسترسی تابع، «آزمایش API» را بزنید.");
-   else laStatus("Supabase تنظیم شده است؛ برای ادامه وارد حساب شوید یا حساب بسازید.");
- });
-}
+(async()=>{
+ const ok=await checkGateSession();
+ if(ok) { showAuthenticated(true); laStatus("نشست قبلی معتبر است."); }
+ else { clearGateToken(); showAuthenticated(false); laStatus("برای ورود، رمز پنل را وارد کنید."); }
+})();
 </script>
 
 <script>
@@ -135,11 +122,11 @@ async function legendsApi(path, options = {}) {
   if (typeof path !== "string" || !path.startsWith("/") || path.startsWith("//")) {
     throw new Error("مسیر API نامعتبر است.");
   }
-  const sessionResult = legendsSupabase
-    ? await legendsSupabase.auth.getSession()
-    : { data: { session: null } };
-  const accessToken = sessionResult.data?.session?.access_token;
-  if (!accessToken) throw new Error("ابتدا از بخش ورود، وارد حساب Supabase شوید.");
+  const accessToken = getGateToken();
+  if (!accessToken || !(await checkGateSession(accessToken))) {
+    clearGateToken(); showAuthenticated(false);
+    throw new Error("نشست پنل معتبر نیست یا منقضی شده؛ دوباره وارد شوید.");
+  }
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), LEGENDS_API.timeoutMs);
   try {
