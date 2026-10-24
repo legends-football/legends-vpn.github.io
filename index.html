@@ -160,16 +160,12 @@ async function legendsApi(path, options = {}) {
   }
 }
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
-let users=[
-{name:"آرمان رضایی",email:"arman@example.test",plan:"Pro",used:184,total:300,expiry:"۱۴۰۵/۰۸/۱۵",status:"فعال"},
-{name:"سارا محمدی",email:"sara@example.test",plan:"Plus",used:91,total:150,expiry:"۱۴۰۵/۰۸/۰۹",status:"فعال"},
-{name:"علی کریمی",email:"ali@example.test",plan:"Starter",used:48,total:50,expiry:"۱۴۰۵/۰۷/۲۸",status:"رو به انقضا"},
-{name:"نگار احمدی",email:"negar@example.test",plan:"Pro",used:300,total:300,expiry:"۱۴۰۵/۰۷/۱۰",status:"منقضی"},
-{name:"پارسا حسینی",email:"parsa@example.test",plan:"Plus",used:23,total:150,expiry:"۱۴۰۵/۰۸/۲۰",status:"فعال"}];
+// شروع با فهرست خالی؛ فقط پاسخ موفق API می‌تواند کاربران واقعی را اضافه کند.
+let users=[];
 const servers=[["EU-West-01","اروپای غربی","اصلی","42 ms","نمونه: سالم"],["EU-Central-02","اروپای مرکزی","جایگزین","48 ms","نمونه: سالم"],["EU-North-03","اروپای شمالی","ظرفیت اضافی","71 ms","نمونه: سالم"],["Fallback-04","تعریف‌نشده","بازیابی","—","پیکربندی نشده"]];
 let events=[["✓","رابط مدیریتی بارگذاری شد","داشبورد در مرورگر باز شد؛ بک‌اند متصل نیست.","همین حالا"],["⚑","نیاز به پیکربندی سرور","آدرس و وضعیت واقعی سرور هنوز تعریف نشده است.","یادآوری سامانه"],["◇","سیاست حریم خصوصی","فقط داده‌های ضروری را نگه‌داری کن.","چک‌لیست امنیت"]];
 function toast(s){let t=$("#toast");t.textContent=s;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800)}
-function renderUsers(){let q=($("#search")?.value||"").toLowerCase();$("#usersBody").innerHTML=users.filter(u=>(u.name+u.email+u.plan).toLowerCase().includes(q)).map(u=>`<tr><td><div class="usercell"><div class="avatar">${u.name[0]}</div><div>${u.name}<small>${u.email}</small></div></div></td><td>${u.plan}</td><td><div style="display:flex;align-items:center;gap:7px"><div class="progress"><span style="width:${Math.min(100,u.used/u.total*100)}%"></span></div><small>${u.used}/${u.total} GB</small></div></td><td>${u.expiry}</td><td><span class="pill ${u.status==="منقضی"?"expired":u.status==="رو به انقضا"||u.status==="آزمایشی"?"trial":""}">${u.status}</span></td><td><button class="link" data-user="${u.email}">جزئیات</button></td></tr>`).join("")||'<tr><td colspan="6">موردی پیدا نشد</td></tr>'}
+function renderUsers(){let q=($("#search")?.value||"").toLowerCase();$("#usersBody").innerHTML=users.filter(u=>(u.name+u.email+u.plan).toLowerCase().includes(q)).map(u=>`<tr><td><div class="usercell"><div class="avatar">${u.name[0]}</div><div>${u.name}<small>${u.email}</small></div></div></td><td>${u.plan}</td><td><div style="display:flex;align-items:center;gap:7px"><div class="progress"><span style="width:${Math.min(100,u.used/u.total*100)}%"></span></div><small>${u.used}/${u.total} GB</small></div></td><td>${u.expiry}</td><td><span class="pill ${u.status==="منقضی"?"expired":u.status==="رو به انقضا"||u.status==="آزمایشی"?"trial":""}">${u.status}</span></td><td><button class="link" data-user="${u.email}">جزئیات</button></td></tr>`).join("")||'<tr><td colspan="6">هنوز داده‌ای بارگذاری نشده؛ برای دریافت کاربران واقعی روی «بارگذاری از دیتابیس» بزنید.</td></tr>'}
 function renderServers(){$("#serverBody").innerHTML=servers.map(s=>`<tr><td dir="ltr"><b>${s[0]}</b></td><td>${s[1]}</td><td>${s[2]}</td><td dir="ltr">${s[3]}</td><td><span class="pill ${s[4].includes("پیکربندی")?"trial":""}">${s[4]}</span></td></tr>`).join("")}
 function renderEvents(){$("#events").innerHTML=events.map(e=>`<div class="event"><div class="eventicon">${e[0]}</div><div><b>${e[1]}</b><p>${e[2]}</p><time>${e[3]}</time></div></div>`).join("")||'<div style="padding:24px;color:var(--m)">رویدادی نیست.</div>'}
 function goto(id){$$(".page").forEach(p=>p.classList.toggle("active",p.id===id));$$("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===id));$("#pageTitle").textContent=({overview:"مرکز کنترل سرویس",users:"کاربران و اشتراک‌ها",servers:"سرورها و سلامت",plans:"پلن‌ها و ظرفیت",activity:"گزارش رویدادها",settings:"تنظیمات سامانه"})[id];$("#side").classList.remove("open");scrollTo({top:0,behavior:"smooth"})}
@@ -189,9 +185,9 @@ async function loadRealUsers(){
         plan: sub.plan_name || "بدون پلن", used: 0, total: 1, expiry, status };
     });
     renderUsers();
-    toast("اطلاعات کاربران از دیتابیس دریافت شد.");
+    toast("اطلاعات کاربران از دیتابیس دریافت شد: " + users.length + " کاربر.");
   } catch (err) {
-    toast("دریافت کاربران ناموفق بود؛ داده‌های نمونه حفظ شدند.");
+    toast("دریافت کاربران ناموفق بود؛ هیچ دادهٔ نمونه‌ای نمایش داده نمی‌شود.");
     laStatus("بارگذاری کاربران واقعی انجام نشد: " + err.message +
       "\\nبررسی کنید با حساب ادمین Supabase وارد شده باشید و تابع legends-api نسخه جدید را Deploy کرده باشید.");
   }
@@ -199,7 +195,7 @@ async function loadRealUsers(){
 $("#add").onclick=()=>{let n=users.length+1;users.unshift({name:"کاربر آزمایشی "+n,email:"demo"+n+"@example.test",plan:"Starter",used:0,total:50,expiry:"تعیین نشده",status:"آزمایشی"});renderUsers();toast("کاربر نمونه اضافه شد؛ اطلاعات ارسال نشد.")};
 $("#check").onclick=()=>toast("بررسی زنده ممکن نیست؛ بک‌اند مانیتورینگ متصل نیست.");$$("[data-plan]").forEach(b=>b.onclick=()=>toast("ویرایش پلن "+b.dataset.plan+" فعلاً نمایشی است."));
 $("#clear").onclick=()=>{events=[];renderEvents();toast("رویدادهای نمایشی پاک شد.")};$("#settingsForm").onsubmit=e=>{e.preventDefault();toast("تنظیمات فقط نمایشی است؛ ذخیرهٔ دائمی انجام نشد.")};
-$("#exportBtn").onclick=()=>{let rows=[["name","email","plan","used_gb","total_gb","expiry","status"],...users.map(u=>[u.name,u.email,u.plan,u.used,u.total,u.expiry,u.status])];let csv="\uFEFF"+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="legends-vpn-demo-users.csv";a.click();URL.revokeObjectURL(a.href);toast("فایل خروجی نمونه ساخته شد.")};
-document.addEventListener("click",e=>{let b=e.target.closest("[data-user]");if(b){let u=users.find(x=>x.email===b.dataset.user);if(u)toast(u.name+" · "+u.plan+" · "+u.status+" — اطلاعات نمونه")}});
+$("#exportBtn").onclick=()=>{let rows=[["name","email","plan","used_gb","total_gb","expiry","status"],...users.map(u=>[u.name,u.email,u.plan,u.used,u.total,u.expiry,u.status])];let csv="\uFEFF"+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="legends-vpn-users.csv";a.click();URL.revokeObjectURL(a.href);toast("فایل خروجی نمونه ساخته شد.")};
+document.addEventListener("click",e=>{let b=e.target.closest("[data-user]");if(b){let u=users.find(x=>x.email===b.dataset.user);if(u)toast(u.name+" · "+u.plan+" · "+u.status)}});
 $("#chart").innerHTML=[42,66,51,83,60,91,72].map(v=>`<div class="barwrap"><div class="bar alt" style="height:${v-17}%"></div><div class="bar" style="height:${v}%"></div></div>`).join("");renderUsers();renderServers();renderEvents();
 </script></body></html>
